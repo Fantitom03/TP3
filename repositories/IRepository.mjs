@@ -1,5 +1,5 @@
 export default class IRepository {
-    obtenerPorID(id){
+    obtenerPorId(id) {
         throw new Error("Método 'obtenerPorId()' no implementado");
     }
 

@@ -2,9 +2,15 @@ import SuperHero from "../models/SuperHero.mjs";
 import IRepository from "./IRepository.mjs";
 
 class SuperHeroRepository extends IRepository {
+    
     async obtenerPorId(id) {
-        return await SuperHero.findById(id);
-
+        try {
+            // Busca un superhéroe por ID en la base de datos
+            return await SuperHero.findById(id);
+        } catch (error) {
+            console.error("Error al obtener el superhéroe por ID:", error);
+            throw error;
+        }
     }
 
     async obtenerTodos() {
@@ -19,8 +25,11 @@ class SuperHeroRepository extends IRepository {
     }
 
     async obtenerMayoresDe30() {
-        return await SuperHero.find ( {edad : {$gt : 30}, planetaOrigen : 'Tierra', poderes : {$size : {gte:2}}} );
-
+        return await SuperHero.find({
+            edad: { $gt: 30 },
+            planetaOrigen: 'Tierra',
+            $expr: { $gte: [{ $size: "$poderes" }, 2] } // Compara el tamaño del array "poderes" con 2
+        });
     }
 
 }
